@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tombola d’Ongles</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        lightPink: '#FCE4EC',
+                        roseAccent: '#F48FB1',
+                        roseDark: '#AD1457',
+                        darkBg: '#2C0A24',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+      .case {
+        position: relative;
+        overflow: hidden;
+        border-radius: 0.75rem;
+        border: 2px solid #AD1457;
+        background: #fff;
+        aspect-ratio: 1/1; /* Garde les cases carrées */
+      }
+      .case img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      }
+      .overlay {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(135deg, #ffd6e7, #ff9fc9);
+        transition: opacity 0.3s;
+        opacity: 1;
+        z-index: 2;
+      }
+      .case.revealed .overlay {
+        opacity: 0 !important;
+      }
+    </style>
+</head>
+<body class="bg-lightPink dark:bg-darkBg text-gray-800 dark:text-gray-100 antialiased transition-colors duration-300 min-h-screen">
+      <header class="bg-white dark:bg-roseDark/20 backdrop-blur shadow-sm transition-colors">
+       <div class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <!-- Correction : une seule div pour le logo rond -->
+                <div class="w-12 h-12 bg-roseAccent dark:bg-roseDark text-white rounded-full flex items-center justify-center text-xl font-bold overflow-hidden">
+                    <img src="image/Affiche.jpg" alt="Logo Care of Cerena" class="rounded-full w-12 h-12 object-cover">
+                </div>
+                <div>
+                    <h1 class="text-lg font-semibold">Care of Cerena </h1>
+                    <p class="text-sm text-gray-500 dark:text-gray-300">Soins de visage ¤ Onglerie ¤ Maquillage</p>
+                </div>
+            </div>
+            <nav class="hidden md:flex gap-6 text-sm">
+                <a class='hover:text-roseAccent dark:hover:text-roseAccent' href='/'>Services</a>
+                <a class='hover:text-roseAccent dark:hover:text-roseAccent' href='soins.html'>Soins</a>
+                <a class='hover:text-roseAccent dark:hover:text-roseAccent' href='ongle.html'>Onglerie</a>
+                <a class='hover:text-roseAccent dark:hover:text-roseAccent' href='maquillage.html'>Makeup</a>
+                <a class='hover:text-roseAccent dark:hover:text-roseAccent' href='massage.html'>Massage</a>
+                <a class='hover:text-roseAccent dark:hover:text-roseAccent' href='foulard.html'>Nouage de foulard</a>
+                <a class='hover:text-roseAccent dark:hover:text-roseAccent' href='contact.html'>Contact</a>
+            </nav>
+
+            <!-- Bouton mode clair/sombre
+            <button id="themeToggle" class="ml-4 text-roseAccent dark:text-roseAccent text-2xl">🌓</button>-->
+
+            <div class="md:hidden">
+                <button id="menubtn" class="text-gray-600 dark:text-gray-200">☰</button>
+            </div>
+       </div>
+
+       <div id="mobileMenu" class="md:hidden hidden px-4 pb-4 bg-white dark:bg-darkBg">
+            <a class='block py-2' href='index.html'>Services</a>
+            <a class='block py-2' href='soins.html'>Soins</a>
+            <a class='block py-2' href='ongle.html'>Onglerie</a>
+            <a class='block py-2' href='maquillage.html'>Makeup</a>
+            <a class='block py-2' href='massage.html'>Massage</a>
+            <a class='block py-2' href='foulard.html'>Nouage de foulard</a>
+            <a class='block py-2' href='galerie.html'>Galerie</a>
+            <a class='block py-2' href='contact.html'>Contact</a>
+       </div>
+    </header>
+
+    <section class="max-w-6xl mx-auto px-4 py-12">
+        <h2 class="text-3xl font-bold mb-6 text-roseDark dark:text-roseAccent">Modèle de PO au hasard</h2>
+        <p class="text-gray-700 dark:text-gray-300 mb-8">
+            Bienvenue à la tombola d’ongles ! Glissez le curseur pour révéler votre modèle d'ongle 🎉💅
+        </p>
+
+        <div id="imageGrid" class="grid grid-cols-2 md:grid-cols-3 gap-6 mb-8">
+            </div>
+
+        <div class="flex flex-col md:flex-row items-center gap-4 mb-6">
+            <div class="w-full md:w-1/2">
+                <label for="scratchSlider" class="block mb-2 font-medium text-roseDark dark:text-roseAccent">🧤 Glisse pour gratter :</label>
+                <input type="range" id="scratchSlider" min="0" max="100" value="0" class="w-full accent-roseAccent">
+            </div>
+            <div class="w-full md:w-1/3">
+                <label for="caseNumber" class="block mb-2 font-medium text-roseDark dark:text-roseAccent">Choisis un numéro (1 à 6) :</label>
+                <select id="caseNumber" class="w-full rounded-lg border-2 border-roseDark px-3 py-2 text-roseDark dark:text-roseAccent bg-white dark:bg-darkBg">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="flex flex-col md:flex-row gap-4 justify-center">
+            <button id="revealBtn" class="bg-roseDark hover:bg-roseAccent text-white font-bold py-3 px-6 rounded-lg shadow transition">✨ Révéler la case choisie</button>
+            <button id="randomBtn" class="bg-roseDark hover:bg-roseAccent text-white font-bold py-3 px-6 rounded-lg shadow transition">🎲 Choisir aléatoirement</button>
+        </div>
+    </section>
+
+    <script>
+        // CONFIGURATION : Change le nombre selon le total d'images dans ton dossier
+        const TOTAL_IMAGES_DISPONIBLES = 22;
+        const DOSSIER_IMAGES = "..ongle.htmlm/";
+
+        const grid = document.getElementById('imageGrid');
+        const slider = document.getElementById('scratchSlider');
+        const caseNumber = document.getElementById('caseNumber');
+        const revealBtn = document.getElementById('revealBtn');
+        const randomBtn = document.getElementById('randomBtn');
+
+        // Fonction pour générer 6 nombres aléatoires uniques
+        function genererSelection() {
+            let pool = [];
+            for (let i = 1; i <= TOTAL_IMAGES_DISPONIBLES; i++) {
+                pool.push(i);
+            }
+            // Mélange et prend les 6 premiers
+            return pool.sort(() => 0.5 - Math.random()).slice(0, 6);
+        }
+
+        // Initialisation de la grille
+        function init() {
+            const selection = genererSelection();
+            grid.innerHTML = '';
+
+            selection.forEach((num, index) => {
+                const div = document.createElement('div');
+                div.className = 'case shadow-lg';
+                div.innerHTML = `
+                    <img src="${DOSSIER_IMAGES}${num}.jpg" alt="Modèle">
+                    <div class="overlay" id="overlay-${index}"></div>
+                `;
+                grid.appendChild(div);
+            });
+        }
+
+        // --- Logique des contrôles ---
+
+        slider.addEventListener('input', () => {
+            const index = parseInt(caseNumber.value) - 1;
+            const targetOverlay = document.getElementById(`overlay-${index}`);
+            if (targetOverlay) {
+                targetOverlay.style.opacity = 1 - (slider.value / 100);
+            }
+        });
+
+        revealBtn.addEventListener('click', () => {
+            const index = parseInt(caseNumber.value) - 1;
+            const cases = document.querySelectorAll('.case');
+            cases.forEach((c, i) => {
+                const ov = c.querySelector('.overlay');
+                if (i === index) {
+                    c.classList.add('revealed');
+                    ov.style.opacity = 0;
+                } else {
+                    c.classList.remove('revealed');
+                    ov.style.opacity = 1;
+                }
+            });
+            slider.value = 100;
+        });
+
+        randomBtn.addEventListener('click', () => {
+            const randomIndex = Math.floor(Math.random() * 6);
+            caseNumber.value = randomIndex + 1;
+            revealBtn.click(); // Réutilise la logique de révélation
+        });
+
+        caseNumber.addEventListener('change', () => {
+            slider.value = 0;
+            document.querySelectorAll('.case').forEach(c => {
+                c.classList.remove('revealed');
+                c.querySelector('.overlay').style.opacity = 1;
+            });
+        });
+
+        // Lancement au chargement
+        window.onload = init;
+
+            const themeToggle = document.getElementById("theme-toggle");
+            if (themeToggle) {
+              themeToggle.addEventListener("click", () => {
+                document.documentElement.classList.toggle("dark");
+                localStorage.setItem("theme", document.documentElement.classList.contains("dark") ? "dark" : "light");
+              });
+            }
+            if (localStorage.getItem("theme") === "dark") {
+              document.documentElement.classList.add("dark");
+            }
+            // Menu mobile
+            document.getElementById('menubtn').addEventListener('click', ()=>{
+              const menu = document.getElementById('mobileMenu');
+              menu.classList.toggle('hidden');
+            });
+            document.getElementById('year').textContent = new Date().getFullYear();
+
+    </script>
+</body>
+</html>
